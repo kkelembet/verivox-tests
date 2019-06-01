@@ -10,7 +10,7 @@ class ResultPage extends BasePage {
     }
     get availableResultsList() {
         const selector = '//fieldset/ul/li';
-        return $(selector);
+        return $$(selector);
     }
     get tariffDetailsButton() {
         return $('.tariff-detail');
@@ -23,7 +23,7 @@ class ResultPage extends BasePage {
         return $(selector);
     }
     get moreResultsButton() {
-        const selector = '//*[@id="verivoxBroadbandCalculatorContent"]/div[3]/p[1]/button';
+        const selector = '#verivoxBroadbandCalculatorContent > div.products-table-full-width.vx-broadband-tooltip-container > p.pagination-area > button';
         return $(selector);
     }
 
@@ -31,11 +31,7 @@ class ResultPage extends BasePage {
         return $('.resultlist-headline');
     }
 
-    get appFooter() {
-        return $('.app-footer');
-    }
-
-    open() {
+    openDSLResultsPage() {
         super.open('https://www.verivox.de/internet-vergleich/internetundtelefon/?Prefix=089&speed=16000#/');
     }
 
@@ -45,13 +41,12 @@ class ResultPage extends BasePage {
     }
 
     allVisibleResults() {
-        let list = browser.getValue('//fieldset/ul/li');
-        return list.length;
+        let results = this.availableResultsList;
+        return results.length;
     }
 
     tariffDetailsButtonClick() {
         this.tariffDetailsButton.click();
-        super.scroll(0, 200);
     }
 
     waitForTariffDetails() {
@@ -62,9 +57,8 @@ class ResultPage extends BasePage {
         this.openTariffDetailButton.click();
     }
 
-    scrollDownToFooter() {
-        //TODO: add real navigation
-        super.scroll(0, 3500);
+    scrollToButtonMoreResults() {
+        super.scroll(this.moreResultsButton.selector);
     }
 
     moreResultsClick() {
@@ -74,6 +68,10 @@ class ResultPage extends BasePage {
 
     waitForPageLoaded() {
         this.resultList.waitForVisible(5000);
+    }
+
+    browserPause() {
+        super.pause(3000);
     }
 
 }

@@ -13,7 +13,11 @@ export default class BasePage {
         browser.url(path);
     }
 
-    scroll(x, y){
-        browser.scroll(x, y);
+    scroll(element){
+        browser.scrollIntoView(element);
+    }
+
+    pause(time){
+        browser.pause(time);
     }
 }

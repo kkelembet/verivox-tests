@@ -7,7 +7,7 @@ class TariffDetailsPage extends BasePage {
     }
     get in5MinOnlineButton() {
         const selector = '//a[@class="responsive-label-txt offer-page-cta"]';
-        return $(selector);
+        return $$(selector);
     }
     get tariffName() {
         const selector = '//div[@class="tariff-details"]/h3';
@@ -24,8 +24,8 @@ class TariffDetailsPage extends BasePage {
         return $('.costs-after-24-months');
     }
 
-    length5MinsButtons() {
-        let buttons = browser.getValue('//a[@class="responsive-label-txt offer-page-cta"]');
+    numberOf5MinutesButtons() {
+        let buttons = this.in5MinOnlineButton;
         return buttons.length;
     }
 

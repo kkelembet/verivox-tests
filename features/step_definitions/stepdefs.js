@@ -3,7 +3,6 @@ import HomePage from '../page-objects/home-page';
 import ResultPage from '../page-objects/dsl-result-page';
 import TariffDetailsPage from '../page-objects/tariff-details-page';
 import { expect } from 'chai';
-import 'babel-polyfill';
 
 //Scenario 1
 
@@ -17,7 +16,7 @@ When(/^he is on the DSL calculator$/, () => {
     HomePage.clickDSL();
 });
 
-When(/^he enters prefix "([^"]*)" “Ihre Vorwahl” as 030 with 16 Mbit bandwidth selection$/, (code) => {;
+When(/^he enters prefix “Ihre Vorwahl” as "([^"]*)" with 16 Mbit bandwidth selection$/, (code) => {;
     HomePage.setAreaCode(code);
     HomePage.click16MbpsOption();
 });
@@ -41,7 +40,7 @@ Then(/^he should be able see the Result List page with all the available Tariffs
 //Scenario 2
 
 Given(/^the User is on the DSL Result List$/, () =>  {
-    ResultPage.open();
+    ResultPage.openDSLResultsPage();
     ResultPage.waitForPageLoaded();
     expect(ResultPage.resultList.isExisting()).to.equal(true);
 });
@@ -67,7 +66,7 @@ Then(/^he should be able see the details of the selected Tariff$/, () => {
 });
 
 When(/^he should also see a button labeled as "In 5 Minuten online wechseln"$/, () =>  {
-    expect(TariffDetailsPage.length5MinsButtons()).to.equal(2);
+    expect(TariffDetailsPage.numberOf5MinutesButtons()).to.equal(2);
 });
 
 
@@ -78,11 +77,12 @@ When(/^there are more than 20 tariffs available for the provided Vorwahl and ban
 });
 
 Then(/^the User should click a button labeled as "20 weitere laden"$/, function () {
-    ResultPage.scrollDownToFooter();
+    ResultPage.scrollToButtonMoreResults();
     ResultPage.moreResultsClick();
 });
 
 Then(/^he or she clicks on this button$/, function () {
+    ResultPage.browserPause();
     if(ResultPage.allVisibleResults() > 21) {
         console.log('User clicked button');
     } else {
@@ -91,9 +91,10 @@ Then(/^he or she clicks on this button$/, function () {
 });
 
 Then(/^the list should be appended with next 20 tariffs and so on until all Tariffs are loaded$/, function () {
-    for(let i = 0; i < 10; i++) {
-        ResultPage.scrollDownToFooter();
+    for(let i = 0; i < 5; i++) {
+        ResultPage.browserPause();
         if(ResultPage.moreResultsButton.isExisting() === true ){
+            ResultPage.scrollToButtonMoreResults();
             ResultPage.moreResultsClick();
         } else {
             console.log('There no more results available');
