@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/wdio wdio.conf.js --require babel-register --babel-polyfill;",
+    "test": "./node_modules/.bin/wdio wdio.conf.js --require babel-register --babel-polyfill; allure generate ./allure-results --clean && rm -rf ./allure-results && allure open",
     "test1": "cucumber-js --require-module @babel/register --require-module @babel/polyfill; allure generate ./allure-results --clean && rm -rf ./allure-results && allure open",
     "my_test": "./node_modules/.bin/cucumber-js --require-module @babel/register features"
   },
