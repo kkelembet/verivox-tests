@@ -2,12 +2,25 @@ import BasePage from './base-page';
 
 class HomePage extends BasePage {
 
-    get DSLButton() { return $('#mps-tab-5'); }
-    get areaCodeField() {return browser.element('//div[1]/div/div[6]/form/div[2]/div[1]/input');}
-    get option16Mbps() { return browser.element('//form/div[2]/div[2]/label/strong[contains(text(),"16")]'); }
-    get compareNowButton() { return browser.element('//div[6]/form/div[2]/button'); }
+    get DSLButton() {
+        return $('#mps-tab-5');
+    }
+    get areaCodeField() {
+        const selector = '//div[1]/div/div[6]/form/div[2]/div[1]/input';
+        return $(selector);
+    }
+    get option16Mbps() {
+        const selector = '//form/div[2]/div[2]/label/strong[contains(text(), "16")]';
+        return $(selector);
+    }
+    get compareNowButton() {
+        const selector = '//div[6]/form/div[2]/button';
+        return $(selector);
+    }
 
-    open() {
+
+    openHomePage() {
+        super.setup();
         super.open('https://www.verivox.de');
     }
 
@@ -17,19 +30,21 @@ class HomePage extends BasePage {
 
     clickDSL() {
         this.DSLButton.click();
-        browser.pause(3000);
+    }
+
+    setAreaCode(code) {
+        this.areaCodeField.waitForVisible(5000);
+        this.areaCodeField.setValue(code);
     }
 
     click16MbpsOption() {
-        this.option16Mbps.click();
-        browser.pause(3000);
+       this.option16Mbps.click();
     }
 
     clickCompareNowButton() {
         this.compareNowButton.click();
-        browser.pause(3000);
     }
 
 }
 
-export default new HomePage();
+export default  new HomePage();

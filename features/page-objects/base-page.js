@@ -1,15 +1,19 @@
 export default class BasePage {
 
     constructor() {
-        this.title = 'My Page';
+        this.title = 'Verivox';
+    }
+
+    setup() {
+        browser.windowHandleSize({width:1440,height:820});
+        browser.deleteCookie();
     }
 
     open(path) {
-        browser.deleteCookie();
         browser.url(path);
     }
 
-    wait(delay) {
-        new Promise(resolve => setTimeout(resolve, delay));;
+    scroll(x, y){
+        browser.scroll(x, y);
     }
 }
