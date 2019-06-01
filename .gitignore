@@ -62,4 +62,9 @@ typings/
 # next.js build output
 .next
 
+# Test results
+.allure-results/
+allure-report/
+screenshots/
+
 .DS_Store
