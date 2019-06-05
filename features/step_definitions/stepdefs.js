@@ -16,7 +16,7 @@ When(/^he is on the DSL calculator$/, () => {
     HomePage.clickDSL();
 });
 
-When(/^he enters prefix “Ihre Vorwahl” as "([^"]*)" with 16 Mbit bandwidth selection$/, (code) => {;
+When(/^he enters prefix “Ihre Vorwahl” as "([^"]*)" with 16 Mbit bandwidth selection$/, (code) => {
     HomePage.setAreaCode(code);
     HomePage.click16MbpsOption();
 });
@@ -27,7 +27,7 @@ When(/^clicks on the button labeled as "JETZT VERGLEICHEN"$/, () => {
 
 Then(/^he should be able see the Result List page with all the available Tariffs$/, () => {
     ResultPage.clickCloseButton();
-    ResultPage.waitForPageLoaded();
+    ResultPage.waitForResults();
     if(ResultPage.tariffDetailsButton.isExisting() === true) {
         expect(ResultPage.allVisibleResults()).to.equal(21);
     } else {
@@ -41,11 +41,12 @@ Then(/^he should be able see the Result List page with all the available Tariffs
 
 Given(/^the User is on the DSL Result List$/, () =>  {
     ResultPage.openDSLResultsPage();
-    ResultPage.waitForPageLoaded();
+    ResultPage.waitForResults();
     expect(ResultPage.resultList.isExisting()).to.equal(true);
 });
 
 When(/^he selects one of the listed Tariffs$/, () =>  {
+    ResultPage.scrollToButtonTariffDetails();
     ResultPage.tariffDetailsButtonClick();
     ResultPage.waitForTariffDetails();
     expect(ResultPage.tariffDetails.isExisting()).to.equal(true);
@@ -53,6 +54,7 @@ When(/^he selects one of the listed Tariffs$/, () =>  {
 });
 
 When(/^clicks on "mehr zum Tarif" button$/, () => {
+    ResultPage.scrollToButtonTariffDetailsOpen();
     ResultPage.tariffDetailsOpenButtonClick();
 });
 
@@ -72,35 +74,32 @@ When(/^he should also see a button labeled as "In 5 Minuten online wechseln"$/, 
 
 //Scenario 3
 
-When(/^there are more than 20 tariffs available for the provided Vorwahl and bandwidth$/, function () {
+When(/^there are more than 20 tariffs available for the provided Vorwahl and bandwidth$/, () => {
     expect(ResultPage.allVisibleResults()).to.equal(21);
 });
 
-Then(/^the User should click a button labeled as "20 weitere laden"$/, function () {
+Then(/^the User should see a button labeled as "20 weitere laden"$/, () => {
     ResultPage.scrollToButtonMoreResults();
+    ResultPage.waitForButtonMoreResults();
+    expect(ResultPage.moreResultsButton.isVisible()).to.equal(true);
+});
+
+Then(/^he or she clicks on this button$/, () => {
+    let resultsCount = ResultPage.allVisibleResults();
     ResultPage.moreResultsClick();
+    ResultPage.waitForNewResults(resultsCount);
+    ResultPage.scrollToButtonMoreResults();
 });
 
-Then(/^he or she clicks on this button$/, function () {
-    ResultPage.browserPause();
-    if(ResultPage.allVisibleResults() > 21) {
-        console.log('User clicked button');
-    } else {
-        console.log('There less then 21 result available');
+Then(/^the list should be appended with next 20 tariffs and so on until all Tariffs are loaded$/, () => {
+    let isMoreButtonVisible = ResultPage.moreResultsButton.isVisible();
+    while (isMoreButtonVisible === true) {
+        ResultPage.scrollToButtonMoreResults();
+        let resultsCount = ResultPage.allVisibleResults();
+        ResultPage.moreResultsClick();
+        ResultPage.waitForNewResults(resultsCount);
+        isMoreButtonVisible = ResultPage.moreResultsButton.isVisible();
     }
-});
-
-Then(/^the list should be appended with next 20 tariffs and so on until all Tariffs are loaded$/, function () {
-    for(let i = 0; i < 5; i++) {
-        ResultPage.browserPause();
-        if(ResultPage.moreResultsButton.isExisting() === true ){
-            ResultPage.scrollToButtonMoreResults();
-            ResultPage.moreResultsClick();
-        } else {
-            console.log('There no more results available');
-        }
-    }
-
 });
 
 

@@ -18,7 +18,6 @@ class HomePage extends BasePage {
         return $(selector);
     }
 
-
     openHomePage() {
         super.setup();
         super.open('https://www.verivox.de');
@@ -33,11 +32,12 @@ class HomePage extends BasePage {
     }
 
     setAreaCode(code) {
-        this.areaCodeField.waitForVisible(5000);
+        this.areaCodeField.waitForVisible(10000);
         this.areaCodeField.setValue(code);
     }
 
     click16MbpsOption() {
+        this.option16Mbps.waitForVisible(10000);
        this.option16Mbps.click();
     }
 

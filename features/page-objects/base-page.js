@@ -17,7 +17,9 @@ export default class BasePage {
         browser.scrollIntoView(element);
     }
 
-    pause(time){
-        browser.pause(time);
+    waitUntil(condition, time) {
+        browser.waitUntil(() => {
+            return condition()
+        }, time);
     }
 }

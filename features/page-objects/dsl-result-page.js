@@ -5,28 +5,25 @@ class ResultPage extends BasePage {
     get closeSplashButton() {
         return $('.telco-close-splash');
     }
-    get resultList() {
-        return $('#verivoxBroadbandCalculator');
-    }
     get availableResultsList() {
         const selector = '//fieldset/ul/li';
         return $$(selector);
     }
     get tariffDetailsButton() {
-        return $('.tariff-detail');
+        const selector = '#broadbandResultListContainer > fieldset > ul > li:nth-child(2) > div.products-table-full-width.result-table > div.content > div.rating-cta-details > span';
+        return $(selector);
     }
     get tariffDetails() {
         return $('.tariff-details-container');
     }
     get openTariffDetailButton() {
-        const selector = '//resultlist-position-zero/div/div[1]/div[2]/div[1]/div[4]/div[2]/div/button';
+        const selector = '#broadbandResultListContainer > fieldset > ul > li:nth-child(2) > div.products-table-full-width.result-table > div.content > div:nth-child(1) > div.product-order > div:nth-child(2) > div > button';
         return $(selector);
     }
     get moreResultsButton() {
         const selector = '#verivoxBroadbandCalculatorContent > div.products-table-full-width.vx-broadband-tooltip-container > p.pagination-area > button';
         return $(selector);
     }
-
     get resultList() {
         return $('.resultlist-headline');
     }
@@ -36,7 +33,7 @@ class ResultPage extends BasePage {
     }
 
     clickCloseButton() {
-        this.closeSplashButton.waitForVisible(5000);
+        this.closeSplashButton.waitForVisible(10000);
         this.closeSplashButton.click();
     }
 
@@ -61,17 +58,31 @@ class ResultPage extends BasePage {
         super.scroll(this.moreResultsButton.selector);
     }
 
-    moreResultsClick() {
+    scrollToButtonTariffDetails() {
+        super.scroll(this.tariffDetailsButton.selector);
+    }
+
+    scrollToButtonTariffDetailsOpen() {
+        super.scroll(this.openTariffDetailButton.selector);
+    }
+
+    waitForButtonMoreResults() {
         this.moreResultsButton.waitForVisible(5000);
+    }
+
+    moreResultsClick() {
+        this.waitForButtonMoreResults();
         this.moreResultsButton.click();
     }
 
-    waitForPageLoaded() {
-        this.resultList.waitForVisible(5000);
+    waitForResults() {
+        this.resultList.waitForVisible(10000);
     }
 
-    browserPause() {
-        super.pause(3000);
+    waitForNewResults(newResults) {
+        this.waitUntil(() => {
+            return this.allVisibleResults() > newResults;
+        }, 15000);
     }
 
 }
