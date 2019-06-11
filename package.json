@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/wdio wdio.conf.js; allure generate ./allure-results --clean && rm -rf ./allure-results && allure open"
+    "test": "./node_modules/.bin/wdio wdio.conf.js",
+    "report": "allure generate ./allure-results --clean && allure open"
   },
   "keywords": [],
   "author": "Kateryna Kelembet",
